@@ -1,47 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta charset="UTF-8">
-    <title>UniPin - Payment</title>
+    <title>Payment</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/unipin-bootstrap.css">
-    <link rel="stylesheet" href="/css/fonts.css">
-    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
     <style>
-        .checkout-overview img{
-            width: 50px;
+        .card { 
+            max-width: 715px;
+            background-color: #353B67; 
         }
-        .checkout-amount {
-            font-size: 36px;
-            margin-top: 15px;
+
+        .information-container {
+            display: flex;
+            flex-direction: row;
         }
-        .topbar-failed-description{
-            color:#FF4949;
-            text-align:center;
+
+        .checkout-status {
+            background-color: #282D51;
+            width: 33%;
         }
-        .topbar-success-description{
-            color:#00B01D;
-            text-align:center;
+
+        .checkout-status .description {
+            font-size: 14px;
+            font-weight: 400;
+            color: #858BBB;
         }
-        .topbar-description{
-            color:#FF962D;
-            text-align:center;
+
+        .checkout-status .description.success-description { color: #08CF65; } 
+
+        .checkout-status .description.fail-description { color: #FF5757; }
+
+        .checkout-status .checkout-amount { font-size: 28px; }
+
+        .payment-details {
+            width: 67%; 
         }
+
         .details-row {
             display: flex;
-            margin-top: 12px;
+            margin-bottom: 12px;
         }
+
         .details-row .details-label {
+            font-size: 14px;
             font-weight: 400;
-            color: #bec4cf;
+            color: #858BBB;
             min-width: 100px;
             flex-shrink: 0;
         }
         .details-row .details-value {
+            font-size: 14px;
             flex-grow: 1;
             text-align: right;
             overflow-wrap: break-word;
@@ -49,162 +61,89 @@
             color: #fff;
             margin-left: 15px;
         }
-        .column { float: left; }
-        .steps-container{
-            border:1px solid #FF962D;
-            border-radius: 5px;
-        }
-        td {
-            vertical-align: top;
-        }
-        .payment-notice{
-            text-align: center;
-            color: #fff;
-            background-color:#FF962D;
-            font-size:13px;
-            padding:10px
-        }
-        .payment-timer-instruction{
-            text-align: justify;
-            text-justify: inter-word;
-            color:#bec4cf;
-            font-weight: 350;
-            font-size:13px;
-            margin:15px 0px;
-        }
-        #userManualContainer{
-            display:none;
-            border: 1px solid #eee;
-            border-radius:5px;
-            padding:10px;
-            margin-top:3px;
-            text-align: center;
-            color:#fff;
-            font-weight: 350;
-            font-size:13px;
-        }
-        .bottom-description{
-            text-align:center;
-            font-size:12px;
-            margin-top:10px;
-            color:#bec4cf;
-        }
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
     </style>
 </head>
 
-<body class="d-flex flex-column">
-<picture>
-    <source media="(min-width:992px)" srcset="/images/bg-overlay-web.png">
-    <img src="/images/bg-overlay-mobile.png" alt="" class="position-absolute w-100 bg-overlay">
-</picture>
-
-<nav class="fixed-top flex-shrink-0 navbar navbar-dark nav-top-outter bg-dark-transparent">
-    <div class="container justify-content-center">
-        <img src="/images/unipin-logo-white.svg" alt="UniPin" width="110px" class="d-block cursor-pointer">
-    </div>
-</nav>
-
-<main class="flex-grow-1">
-    <div class="container container-outter-litepage">
-        <div class="container-shadow-litepage-lg mw-576 card">
-            <div class="checkout-overview m-0 text-center">
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <main class="container">
+        <div class="card mx-auto align-items-center flex-row">
+            <div class="checkout-status p-5 text-center">
                 <div th:switch="${paymentInfoFormModel.paymentStatus}">
                     <div th:case="'SUCCESS'">
-                        <img class="mb-2" src="/images/green-tick.png" alt="Success">
-                        <div class="topbar-success-description" th:text="#{pgw.general.label.paymentSuccess}"></div>
+                        <img class="mb-3" src="/images/green-tick.png" alt="Success">
+                        <div class="description success-description" th:text="#{pgw.general.label.paymentSuccess}"></div>
                     </div>
 
                     <div th:case="'PENDING'">
-                        <img class="mb-2" src="/images/payment-processing-clock.svg" alt="Processing">
-                        <div class="topbar-description" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
+                        <img class="mb-3" src="/images/payment-processing-clock.svg" alt="Processing">
+                        <div class="description" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
                     </div>
 
                     <div th:case="'FAIL'">
-                        <img class="mb-2" src="/images/red-close.jpg" alt="Fail">
-                        <div class="topbar-failed-description" th:text="#{pgw.general.label.paymentFailed}"></div>
+                        <img class="mb-3" src="/images/red-close.jpg" alt="Fail">
+                        <div class="description fail-description" th:text="#{pgw.general.label.paymentFailed}"></div>
                     </div>
 
                     <div th:case="*">
-                        <img class="mb-2" src="/images/payment-processing-clock.svg" alt="Processing">
-                        <div class="topbar-description" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
+                        <img class="mb-3" src="/images/payment-processing-clock.svg" alt="Processing">
+                        <div class="description" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
                     </div>
                 </div>
 
-                <div class="checkout-amount mb-3" th:text="${paymentInfoFormModel.amount}"></div>
+                <div class="checkout-amount mt-3 font-weight-bold" th:text="${paymentInfoFormModel.amount}"></div>
             </div>
 
-            <div class="details-row" th:each="element : ${paymentInfoFormModel.forms}">
-                <div class="details-label" th:text="#{${element.key}}"></div>
-                <div class="details-value" th:text="${element.value}"></div>
+            <div class="payment-details p-5">
+                <div class="details-row" th:each="element : ${paymentInfoFormModel.forms}">
+                    <div class="details-label" th:text="#{${element.key}}">Key</div>
+                    <div class="details-value" th:text="${element.value}">Value</div>
 
-                <input type="image" class="pl-2"
-                       th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
-                       th:attr="onclick=|copy('${element.value}')|" th:id="'btn_txt_copy_' + ${element.value}"
-                       src="/images/copy.png"
-                       alt="Submit" width="20" height="15">
-                <div th:id="'txt_copied_'+${element.value}"
-                     th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
-                     style="color:orange;text-align:right;display:none;padding-left:5px;"
-                     th:text="#{pgw.general.label.copied}">
-                </div>
-                <br>
-            </div>
-
-            <div class="steps-container my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
-                <table th:each="element : ${paymentInfoFormModel.paymentStepList}">
-                    <tr class="mb-2">
-                        <td th:switch="${elementStat.index}">
-                            <span class="row" th:case="'0'"></span>
-                            <span class="" th:case="*" th:text="${elementStat.index}+'.'"></span>
-                        </td>
-                        <td class="pl-2" th:text="${element.toString()}"></td>
-                    </tr>
-                </table>
-            </div>
-
-            <form th:attr=" action=${paymentInfoFormModel.formAction},method=${paymentInfoFormModel.method}" id="ePayment" class="form">
-                <input type="hidden" th:attr="name=refNo,value=${paymentInfoFormModel.refNo}">
-
-                <div class="mt-4" th:if="${paymentInfoFormModel.isVA} == true">
-                    <div class="payment-notice" th:text="#{pgw.general.label.paymentNotice}"></div>
-                    <div class="payment-timer-instruction" th:text="#{pgw.general.label.paymentTimerInstruction}"></div>
-                </div>
-
-                <div class="mb-4" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
-                    <a href="#" class="btn btn-outline-primary rounded-pill d-block m-auto" style="width:60%;" th:text="#{pgw.general.label.userManual}" onclick="toggle();"></a>
-                    <div id="userManualContainer" th:utext="${paymentInfoFormModel.stepsContentBody}"></div>
-                </div>
-
-                <button class="btn btn-primary btn-thumb rounded-pill btn-block" type="submit" th:text="#{pgw.general.label.exit}"></button>
-                <div class="bottom-description" th:text="#{pgw.general.label.popUpSafeClosed}"></div>
-            </form>
-        </div>
-    </div>
-</main>
-
-<footer class="flex-shrink-0">
-    <div class="border-separator"></div>
-
-    <div class="container container-1440 mt-4">
-        <div class="px-lg-3">
-            <div class="row">
-                <div class="footer-copyright-row justify-content-center">
-                    <div class="d-lg-flex">
-                        <div class="footer-cr">© 2023 UniPin. All Rights Reserved</div>
+                    <input type="image" class="pl-2"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        th:attr="onclick=|copy('${element.value}')|" th:id="'btn_txt_copy_' + ${element.value}"
+                        src="/images/copy.png"
+                        alt="Submit" width="20" height="15">
+                    <div th:id="'txt_copied_'+${element.value}"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        style="color:orange;text-align:right;display:none;padding-left:5px;"
+                        th:text="#{pgw.general.label.copied}">
                     </div>
                 </div>
+
+                <div class="steps-container my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
+                    <table th:each="element : ${paymentInfoFormModel.paymentStepList}">
+                        <tr class="mb-2">
+                            <td th:switch="${elementStat.index}">
+                                <span class="row" th:case="'0'"></span>
+                                <span class="" th:case="*" th:text="${elementStat.index}+'.'"></span>
+                            </td>
+                            <td class="pl-2" th:text="${element.toString()}"></td>
+                        </tr>
+                    </table>
+                </div>
+    
+                <form th:attr=" action=${paymentInfoFormModel.formAction},method=${paymentInfoFormModel.method}" id="ePayment" class="form">
+                    <input type="hidden" th:attr="name=refNo,value=${paymentInfoFormModel.refNo}">
+    
+                    <div class="mt-4" th:if="${paymentInfoFormModel.isVA} == true">
+                        <div class="payment-notice" th:text="#{pgw.general.label.paymentNotice}"></div>
+                        <div class="payment-timer-instruction" th:text="#{pgw.general.label.paymentTimerInstruction}"></div>
+                    </div>
+    
+                    <div class="mb-4" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
+                        <a href="#" class="btn btn-outline-primary rounded-pill d-block m-auto" style="width:60%;" th:text="#{pgw.general.label.userManual}" onclick="toggle();"></a>
+                        <div id="userManualContainer" th:utext="${paymentInfoFormModel.stepsContentBody}"></div>
+                    </div>
+    
+                    <button class="btn btn-primary btn-thumb rounded-pill btn-block" type="submit" th:text="#{pgw.general.label.exit}"></button>
+                    <div class="bottom-description" th:text="#{pgw.general.label.popUpSafeClosed}"></div>
+                </form>
             </div>
         </div>
-    </div>
-</footer>
+    </main>
 
-<script src="/js/jquery.js"></script>
-<script th:inline="javascript">
+    <script src="/js/jquery.js"></script>
+    <script th:inline="javascript">
         function toggle(){
             $( "#userManualContainer").toggle();
         }
