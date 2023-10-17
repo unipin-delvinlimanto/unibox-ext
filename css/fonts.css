@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'unipin-icon-v5';
+    src:  url('../fonts/unipin-icon-v5.eot');
+    src:  url('../fonts/unipin-icon-v5.eot') format('embedded-opentype'),
+      url('../fonts/unipin-icon-v5.ttf') format('truetype'),
+      url('../fonts/unipin-icon-v5.woff') format('woff'),
+      url('../fonts/unipin-icon-v5.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+} 
+  
+[class^="icon-"], [class*=" icon-"], .icomoon-class, .glyphicon{
+    font-family: 'unipin-icon-v5' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.icon-cheveron-Left:before {
+    content: "\e911";
+}
+.icon-Verified-User:before {
+    content: "\e943";
+}
+.icon-Expand-Less:before {
+    content: "\e919";
+}
+.icon-Expand-More:before {
+    content: "\e91a";
+}

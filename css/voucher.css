@@ -1,0 +1,42 @@
+.input-group-unipinvoucher {
+  color: #0000006a;
+  font-weight: 400; }
+  .input-group-unipinvoucher input {
+    border: 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    outline: none;
+    transition: border 0.3s;
+    text-align: center;
+    font-size: 1.142rem;
+    padding: 0;
+    margin: 0 5px 15px 5px;
+    color: black; }
+    .input-group-unipinvoucher input:focus {
+      border-color: #ff962d; }
+  .input-group-unipinvoucher .separator {
+    margin: 0 3px; }
+  .input-group-unipinvoucher .input-voucher-label {
+    font-size: 0.8571rem;
+    margin-bottom: 5px; }
+  .input-group-unipinvoucher .input-group-serial {
+    display: flex;
+    justify-content: stretch; }
+    .input-group-unipinvoucher .input-group-serial .input-voucher-label {
+      line-height: 22px;
+      font-size: 1.142rem; }
+    .input-group-unipinvoucher .input-group-serial .serial1 {
+      min-width: 0;
+      max-width: 30px; }
+    .input-group-unipinvoucher .input-group-serial .serial2 {
+      min-width: 0;
+      flex: 1 1 0;
+      text-align: left;
+      padding-left: 8px; }
+  .input-group-unipinvoucher .input-group-pin {
+    display: flex; }
+    .input-group-unipinvoucher .input-group-pin input {
+      flex: 1 1 0;
+      text-align: center;
+      text-transform: uppercase;
+      min-width: 0;
+      width: 100%; }

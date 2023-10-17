@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta charset="UTF-8">
+    <title>Unipin - Payment Redirect</title>
+
+    <style>html { color: #fff; background: #14192b; }</style>
+</head>
+<!--/*@thymesVar id="redirectWithFormModel" type="com.bigledger.core2.domain.paymentGateway.dto.RedirectWithFormModel"*/-->
+<body th:attr="onload='setTimeout(function() { ePayment.submit() }, '+${redirectWithFormModel.delay}+')'">
+<p><b th:if="${redirectWithFormModel.message!=null}" th:text="#{${redirectWithFormModel.message}}"></b></p>
+<p><b th:if="${redirectWithFormModel.rawMessage!=null}" th:text="${redirectWithFormModel.rawMessage}"></b></p>
+
+<form th:attr="action=${redirectWithFormModel.formAction},method=${redirectWithFormModel.method}" id="ePayment">
+    <div th:each="element : ${redirectWithFormModel.forms}">
+        <input type="hidden" th:attr="name=${element.key},value=${element.value}">
+    </div>
+</form>
+</body>
+</html>

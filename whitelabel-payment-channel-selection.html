@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPin - Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/unipin-bootstrap.css">
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/payment-selector.css">
+
+    <style>
+        .topbar{
+            margin-bottom: 20px;
+        }
+        .btn-outline-primary {
+            color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]];
+            border-color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]];
+        }
+        .text-primary {
+            color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]]!important;
+        }
+        .payment-denom-container .payment-denom-button:hover {
+            color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]] !important;
+            background-color: #[[${paymentChannelSelectionModel?.customStyle?.getColor() + "52"}]] !important;
+            border-color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]];
+        }
+        .payment-panel-default-category .payment-panel-heading .payment-card-title .btn .category-charges {
+            color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]];
+        }
+        .pricing .price {
+            color: #[[${paymentChannelSelectionModel?.customStyle?.getColor()}]];
+        }
+        .custom-logo {
+            max-height: 45px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column">
+    <picture>
+        <source media="(min-width:992px)" srcset="/images/bg-overlay-web.png">
+        <img src="/images/bg-overlay-mobile.png" alt="" class="position-absolute w-100 bg-overlay">
+    </picture>
+
+    <nav class="fixed-top flex-shrink-0 navbar navbar-dark nav-top-outter bg-dark-transparent">
+        <div class="container justify-content-center">
+            <img 
+                width="110px" class="d-block cursor-pointer"
+                th:classappend="${paymentChannelSelectionModel?.customStyle?.isCustomLogo() ? 'custom-logo' : ''}" 
+                th:attr="src=${paymentChannelSelectionModel?.customStyle?.getLogo_url() ?: 'https://akaun.com/assets/akaun_light.png'},
+                    alt=${paymentChannelSelectionModel?.customStyle?.getGame_name() ?: 'Akaun'}"
+            >
+        </div>
+    </nav>
+
+    <main class="flex-grow-1">
+        <div class="container container-outter-litepage">
+            <div class="container-shadow-litepage-lg mw-576 card">
+                <div class="topbar mb-2 mb-lg-4">
+                    <div class="topbar-control">
+                        <h1 class="text-white" th:text="#{pgw.general.label.selectPaymentChannel}"></h1>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionPayment">
+                    <!-- START PAYMENT CHANNEL ACCORDION LOOP -->
+                    <div th:each="paymentChannelGroup : ${paymentChannelSelectionModel.pgwPaymentChannelInGroups}" th:classappend="${paymentChannelGroup.value.size()>0} ? '' : 'disabled'" class="payment-panel-default-category has-sub mb-3" th:attr='data-category=${paymentChannelGroup.key.toLowerCase().replace(" ", "_")}' >
+                        <div class="disabled-message-cover" th:text="#{pgw.general.label.amountNotAvailable}">
+                        </div>
+
+                        <div class="payment-panel-heading panel-heading">
+                            <div class="payment-card-title">
+                                <button class="btn" data-toggle="collapse" th:attr='data-target=${"#"+paymentChannelGroup.key.toLowerCase().replace(" ", "_")+"_panel"}' aria-expanded="true" aria-controls="collapseCREDIT_CARD">
+                                    <div class="payment-card-bb">
+                                        <span th:text="${paymentChannelGroup.key}"></span>
+
+                                        <div class="category-charges" th:text="${paymentChannelSelectionModel.currency + ' ' +paymentChannelSelectionModel.amount}" th:attr='id=${paymentChannelGroup.key.toLowerCase().replace(" ", "_")+"_charges"}'></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="panel-collapse collapse" th:attr='id=${paymentChannelGroup.key.toLowerCase().replace(" ", "_")+"_panel"}' data-parent="#accordionPayment">
+                            <div class="payment-channel-button-container">
+                                <form th:each="paymentChannel : ${paymentChannelGroup.value}" class="payment-button-sizer" th:action="@{'/core2/tnt/dm/pgw/payment-redirect'+ ${paymentChannel.isHasRequiredField ? '-validator' : ''} +'/' + ${tenantCode} + '/' + ${paymentChannelSelectionModel.txnHdrGuid} + '/' + ${paymentChannel.getPaymentChannelHdrGuid()}}" method="post" onclick="this.submit();" >
+                                    <div class="payment-channel-button btn available">
+                                        <div class="disabled-message-cover" th:text="#{pgw.general.label.amountNotAvailable}">
+                                        </div>
+                                        <div class="payment-button-top">
+                                            <div class="payment-icon-container"> 
+                                                <img class="bg-white rounded" th:attr='alt=${paymentChannel.getName()},src=${paymentChannel.getLogoUrl()}' class="payment-icon">
+                                            </div>
+                                            <div class="pricing">
+                                                <div class="currency" th:text="${paymentChannelSelectionModel.currency}"></div>
+                                                <div class="price" th:text="${paymentChannelSelectionModel.amount}"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="payment-channel-name c-grey" th:text="${paymentChannel.getName()}">Debit / Credit Card</div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="icon-previews" data-toggle="collapse" th:attr='data-target=${"#"+paymentChannelGroup.key.toLowerCase().replace(" ", "_")+"_panel"}'>
+                            <div class="icon-preview-track">
+                                <div class="scrollable-cue cue-left"></div>
+                            </div>
+                            <span class="icon-Expand-More"></span>
+                        </div>
+                    </div>
+                    <!-- END PAYMENT CHANNEL ACCORDION LOOP -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="flex-shrink-0">
+        <div class="border-separator"></div>
+
+        <div class="container container-1440 mt-4">
+            <div class="px-lg-3">
+                <div class="row">
+                    <div class="footer-copyright-row justify-content-center">
+                        <div class="d-lg-flex">
+                            <div class="footer-cr">© 2023 UniPin. All Rights Reserved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

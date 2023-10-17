@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta charset="UTF-8">
+    <title>UniPin - Payment Redirect</title>
+
+    <style>html { color: #fff; background: #14192b; }</style>
+</head>
+<body onload="setTimeout(function() { document.myForm.submit() }, 100)">
+<p><b th:text="#{pgw.general.message.redirectingToRedirectEndpoint}"></b></p>
+<form th:action="@{${redirectUrl}}" method="post" name="myForm"></form>
+</body>
+</html>

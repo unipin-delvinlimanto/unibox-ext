@@ -1,0 +1,78 @@
+.profile-wallet-card {
+    position: relative;
+    width: 100%;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 4px 5px 0 rgba(0, 0, 0, 0.06), 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 16px; }
+    .profile-wallet-card .topup-button {
+      display: inline-block;
+      color: #fff;
+      background-color: #ff962d;
+      text-transform: uppercase;
+      cursor: pointer;
+      flex-grow: 0;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      min-width: 70px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 14px; }
+      .profile-wallet-card .topup-button:hover, .profile-wallet-card .topup-button:visited, .profile-wallet-card .topup-button:active, .profile-wallet-card .topup-button:focus, .profile-wallet-card .topup-button:focus-within {
+        text-decoration: none;
+        color: #fff; }
+  
+  .profile-uc-label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666666; }
+    .profile-uc-label .uc-peek {
+      font-size: 20px;
+      color: #ff962d; }
+  
+  .profile-uc-amount {
+    font-size: 31px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; }
+    .profile-uc-amount.ion-margin-top > .profile-uc-label {
+      width: unset; }
+    .profile-uc-amount .freeze-label {
+      font-size: 0.8571rem;
+      display: flex;
+      position: absolute;
+      background: #978e8e75;
+      padding: 3px;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center; }
+    .profile-uc-amount a {
+      font-size: 12px;
+      font-weight: normal; }
+  
+  .profile-up-points {
+    display: flex;
+    align-items: center;
+    color: #ff962d;
+    margin-top: 10px; }
+    .profile-up-points .up-point-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #707070; }
+    .profile-up-points .up-points-wrap {
+      margin-left: 10px;
+      margin-right: 4px; }
+    .profile-up-points a {
+      font-size: 24px;
+      line-height: 21px; }
+      .profile-up-points a:hover {
+        text-decoration: none; }
+  
