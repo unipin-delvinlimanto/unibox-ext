@@ -14,8 +14,7 @@
         }
         .checkout-status {
             background-color: #282D51;
-            padding-top: 165px !important;
-            flex: 1 0 33%;
+            flex: 1 0 35%;
         }
         .checkout-status img { 
             width: 43px;
@@ -25,7 +24,7 @@
         .checkout-status .success-description { color: #08CF65; } 
         .checkout-status .fail-description { color: #FF5757; }
         .checkout-status .checkout-amount { font-size: 28px; }
-        .payment-details { flex: 1 0 67%; }
+        .payment-details { flex: 1 0 65%; }
         .details-label {
             color: #858BBB;
             min-width: 100px;
@@ -64,7 +63,6 @@
         @media screen and (max-width: 768px) {
           .card { flex-direction: column !important; }
           .payment-details { padding: 24px !important; }
-          .checkout-status { padding-top: 16px !important; }
         }
     </style>
 </head> 
@@ -72,7 +70,7 @@
 <body class="d-flex justify-content-center align-items-center vh-100">
     <main class="container">
         <div class="card overflow-hidden mx-auto flex-row">
-            <div class="checkout-status p-3 text-center">
+            <div class="checkout-status p-3 text-center d-flex align-items-center justify-content-center">
                 <div th:switch="${paymentInfoFormModel.paymentStatus}">
                     <div th:case="'SUCCESS'">
                         <img class="mb-3" src="/images/green-tick.png" alt="Success">
