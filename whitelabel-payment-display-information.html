@@ -14,14 +14,9 @@
             background-color: #353B67; 
         }
 
-        .information-container {
-            display: flex;
-            flex-direction: row;
-        }
-
         .checkout-status {
             background-color: #282D51;
-            width: 33%;
+            flex: 1 0 33%;
         }
 
         .checkout-status .description {
@@ -36,23 +31,17 @@
 
         .checkout-status .checkout-amount { font-size: 28px; }
 
-        .payment-details {
-            width: 67%; 
-        }
+        .payment-details { flex: 1 0 67%; }
 
-        .details-row {
-            display: flex;
-            margin-bottom: 12px;
-        }
-
-        .details-row .details-label {
+        .details-label {
             font-size: 14px;
             font-weight: 400;
             color: #858BBB;
             min-width: 100px;
             flex-shrink: 0;
         }
-        .details-row .details-value {
+        
+        .details-value {
             font-size: 14px;
             flex-grow: 1;
             text-align: right;
@@ -61,12 +50,70 @@
             color: #fff;
             margin-left: 15px;
         }
+
+        .payment-notice {
+            font-size: 12px;
+            color: #858BBB;
+            background: #282D51;
+            padding: 7px 30px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 58px;
+        }
+
+        .payment-timer-instruction {
+            color: #FFF;
+            text-align: center;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 18px;
+        }
+
+        #userManualContainer {
+            display: none;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 3px;
+            text-align: center;
+            color: #fff;
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        .steps-container {
+            border: 1px solid #FF962D;
+            border-radius: 5px;
+        }
+
+        .accordion-section p {
+            display: none;
+        }
+
+        .accordion-section h2 {
+            cursor: pointer;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid transparent; /* Add transparent border initially */
+        }
+
+        .accordion-section.opened h2 {
+            border-bottom: 1px solid #000; /* Add a border when opened */
+        }
+
+        .arrow {
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
     </style>
 </head>
 
 <body class="d-flex justify-content-center align-items-center vh-100">
     <main class="container">
-        <div class="card mx-auto align-items-center flex-row">
+        <div class="card overflow-hidden mx-auto flex-row">
             <div class="checkout-status p-5 text-center">
                 <div th:switch="${paymentInfoFormModel.paymentStatus}">
                     <div th:case="'SUCCESS'">
@@ -94,7 +141,7 @@
             </div>
 
             <div class="payment-details p-5">
-                <div class="details-row" th:each="element : ${paymentInfoFormModel.forms}">
+                <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
                     <div class="details-label" th:text="#{${element.key}}">Key</div>
                     <div class="details-value" th:text="${element.value}">Value</div>
 
@@ -110,14 +157,14 @@
                     </div>
                 </div>
 
-                <div class="steps-container my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
+                <div class="steps-container mb-3" th:if="${paymentInfoFormModel.paymentStepList != null}">
                     <table th:each="element : ${paymentInfoFormModel.paymentStepList}">
                         <tr class="mb-2">
                             <td th:switch="${elementStat.index}">
-                                <span class="row" th:case="'0'"></span>
-                                <span class="" th:case="*" th:text="${elementStat.index}+'.'"></span>
+                                <span class="row" th:case="'0'">A</span>
+                                <span class="" th:case="*" th:text="${elementStat.index}+'.'">BB</span>
                             </td>
-                            <td class="pl-2" th:text="${element.toString()}"></td>
+                            <td class="pl-2" th:text="${element.toString()}">CCCC</td>
                         </tr>
                     </table>
                 </div>
@@ -125,17 +172,42 @@
                 <form th:attr=" action=${paymentInfoFormModel.formAction},method=${paymentInfoFormModel.method}" id="ePayment" class="form">
                     <input type="hidden" th:attr="name=refNo,value=${paymentInfoFormModel.refNo}">
     
-                    <div class="mt-4" th:if="${paymentInfoFormModel.isVA} == true">
-                        <div class="payment-notice" th:text="#{pgw.general.label.paymentNotice}"></div>
-                        <div class="payment-timer-instruction" th:text="#{pgw.general.label.paymentTimerInstruction}"></div>
+                    <div th:if="${paymentInfoFormModel.isVA} == true">
+                        <div class="payment-notice mb-3" th:text="#{pgw.general.label.paymentNotice}">Your order will be dispatched once the payment is verified</div>
+                        <div class="payment-timer-instruction mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}">Please use the Payment Code within 24 hours. The instructions can be found in the link below and in the email we have sent you.</div>
                     </div>
     
-                    <div class="mb-4" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
-                        <a href="#" class="btn btn-outline-primary rounded-pill d-block m-auto" style="width:60%;" th:text="#{pgw.general.label.userManual}" onclick="toggle();"></a>
-                        <div id="userManualContainer" th:utext="${paymentInfoFormModel.stepsContentBody}"></div>
+                    <div class="mb-3"  th:if="${paymentInfoFormModel.stepsContentBody!=null}">
+                        <a href="#" class="btn btn-outline-primary d-block m-auto" th:text="#{pgw.general.label.userManual}" onclick="toggle();">Payment instructions</a>
+                        <div id="userManualContainer" th:utext="${paymentInfoFormModel.stepsContentBody}">ATM
+                            1. Masukkan kartu ATM dan Pin.
+                            2. Pilih Menu Bayar/Beli.
+                            3. Pilih menu Lainnya, hingga menemukan menu Multipayment.
+                            4. Pilih penyedia jasa OY! Indonesia Masukkan kode biller 89325, lalu pilih Benar.
+                            5. Masukkan Nomor Virtual Account, lalu pilih tombol Benar.
+                            6. Masukkan Angka untuk memilih tagihan, lalu pilih tombol Ya.
+                            7. Akan muncul konfirmasi pembayaran, lalu pilih tombol Ya.
+                            8. Simpan struk sebagai bukti pembayaran Anda.
+                            
+                            INTERNET BANKING atau MANDIRI ONLINE
+                            1. Login Mandiri Online dengan memasukkan username dan password.
+                            2. Pilih menu Pembayaran.
+                            3. Pilih menu Multipayment.
+                            4. Pilih penyedia jasa “OY Indonesia”
+                            5. Masukkan Nomor Virtual Account dan Nominal yang akan dibayarkan, lalu pilih Lanjut.
+                            6. Setelah muncul tagihan, pilih Konfirmasi.
+                            7. Masukkan PIN/ challenge code token.
+                            8. Transaksi selesai, simpan bukti bayar kamu</div>
+                    </div>
+
+                    <div class="mb-3 accordion" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
+                        <div class="accordion-section">
+                            <h2>Section 1 <span class="arrow">▼</span></h2>
+                            <p>Content for section 1 goes here.</p>
+                        </div>
                     </div>
     
-                    <button class="btn btn-primary btn-thumb rounded-pill btn-block" type="submit" th:text="#{pgw.general.label.exit}"></button>
+                    <button class="btn btn-primary btn-thumb btn-block" type="submit" th:text="#{pgw.general.label.exit}">Exit</button>
                     <div class="bottom-description" th:text="#{pgw.general.label.popUpSafeClosed}"></div>
                 </form>
             </div>
@@ -147,6 +219,19 @@
         function toggle(){
             $( "#userManualContainer").toggle();
         }
+        
+        $('.accordion-section h2').click(function() {
+            const content = $(this).next('p');
+            content.toggle();
+
+            // Toggle the arrow icon (▼ and ▲)
+            const arrow = $(this).find('.arrow');
+            arrow.text(content.is(":visible") ? "▼" : "▲");
+
+            // Add or remove the "opened" class for the accordion section
+            $(this).parent('.accordion-section').toggleClass('opened');
+        });
+
         function copy(value) {
             navigator.clipboard.writeText(value);
 
