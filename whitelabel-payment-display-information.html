@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Payment</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -11,65 +10,39 @@
     <style>
         .card { 
             max-width: 715px;
-            background-color: #353B67; 
+            background-color: #353B67;
         }
-
         .checkout-status {
             background-color: #282D51;
+            padding-top: 165px !important;
             flex: 1 0 33%;
         }
-
         .checkout-status .description { color: #858BBB; }
-
         .checkout-status img { 
             width: 43px;
             height: auto;
         }
-
         .checkout-status .description.success-description { color: #08CF65; } 
-
         .checkout-status .description.fail-description { color: #FF5757; }
-
         .checkout-status .checkout-amount { font-size: 28px; }
-
         .payment-details { flex: 1 0 67%; }
-
         .details-label {
             color: #858BBB;
             min-width: 100px;
             flex-shrink: 0;
         }
-        
         .details-value {
             flex-grow: 1;
             text-align: right;
             overflow-wrap: break-word;
         }
-
         .payment-notice {
             color: #858BBB;
             background: #282D51;
             padding: 7px 30px;
             border-radius: 58px;
         }
-
-        .payment-timer-instruction {
-            line-height: 18px;
-        }
-
-        #userManualContainer {
-            display: none;
-            border: 1px solid #FFF;
-            border-radius: 5px;
-        }
-
-        .steps-container {
-            border: 1px solid #FFF;
-            border-radius: 5px;
-        }
-
-        .accordion-section a { display: none; }
-
+        .steps-container { border-radius: 5px; }
         .accordion-section a {
             cursor: pointer;
             margin-bottom: 0;
@@ -77,48 +50,106 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .arrow {
             font-size: 16px;
             color: #6A59FF;
             transition: transform 0.3s;
         }
+        .outline-color { border: 1px solid #858BBB; }
+        #userManualContainer {
+            display: none;
+            border-radius: 5px;
+        }
+
+        @media screen and (max-width: 768px) {
+          .card { flex-direction: column !important; }
+          .payment-details { padding: 24px !important; }
+          .checkout-status { padding-top: 16px !important; }
+        }
     </style>
-</head>
+</head> 
 
 <body class="d-flex justify-content-center align-items-center vh-100">
     <main class="container">
         <div class="card overflow-hidden mx-auto flex-row">
-            <div class="checkout-status p-5 text-center">
+            <div class="checkout-status p-3 text-center">
                 <div th:switch="${paymentInfoFormModel.paymentStatus}">
                     <div th:case="'SUCCESS'">
                         <img class="mb-3" src="/images/green-tick.png" alt="Success">
-                        <div class="description success-description f14" th:text="#{pgw.general.label.paymentSuccess}"></div>
+                        <div class="description success-description f14" th:text="#{pgw.general.label.paymentSuccess}">Transaction Successful</div>
                     </div>
 
-                    <div th:case="'PENDING'">
+                    <!-- <div th:case="'PENDING'">
                         <img class="mb-3" src="/images/payment-processing-clock.svg" alt="Processing">
-                        <div class="description f14" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
+                        <div class="description f14" th:text="#{pgw.general.label.pendingForYourPayment}">Payment Pending</div>
                     </div>
 
                     <div th:case="'FAIL'">
                         <img class="mb-3" src="/images/red-close.jpg" alt="Fail">
-                        <div class="description fail-description f14" th:text="#{pgw.general.label.paymentFailed}"></div>
+                        <div class="description fail-description f14" th:text="#{pgw.general.label.paymentFailed}">Payment Fail</div>
                     </div>
 
                     <div th:case="*">
                         <img class="mb-3" src="/images/payment-processing-clock.svg" alt="Processing">
-                        <div class="description f14" th:text="#{pgw.general.label.pendingForYourPayment}"></div>
-                    </div>
+                        <div class="description f14" th:text="#{pgw.general.label.pendingForYourPayment}">Processing</div>
+                    </div> -->
                 </div>
 
-                <div class="checkout-amount mt-3 font-weight-bold" th:text="${paymentInfoFormModel.amount}"></div>
+                <div class="checkout-amount mt-3 font-weight-bold" th:text="${paymentInfoFormModel.amount}">IDR 120.000</div>
             </div>
 
             <div class="payment-details p-5">
                 <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
-                    <div class="details-label f14" th:text="#{${element.key}}">Key</div>
-                    <div class="details-value f14 text-white" th:text="${element.value}">Value</div>
+                    <div class="details-label f14" th:text="#{${element.key}}">User Name</div>
+                    <div class="details-value f14 text-white" th:text="${element.value}">BLG-CP-COMMERCE</div>
+
+                    <input type="image" class="pl-2"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        th:attr="onclick=|copy('${element.value}')|" th:id="'btn_txt_copy_' + ${element.value}"
+                        src="/images/copy.svg"
+                        alt="Submit" width="30" height="25">
+                    <div th:id="'txt_copied_'+${element.value}"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        style="color:#6A59FF;text-align:right;display:none;padding-left:5px;"
+                        th:text="#{pgw.general.label.copied}">
+                    </div>
+                </div>
+
+                <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
+                    <div class="details-label f14" th:text="#{${element.key}}">Item</div>
+                    <div class="details-value f14 text-white" th:text="${element.value}">120 Diamond</div>
+
+                    <input type="image" class="pl-2"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        th:attr="onclick=|copy('${element.value}')|" th:id="'btn_txt_copy_' + ${element.value}"
+                        src="/images/copy.svg"
+                        alt="Submit" width="30" height="25">
+                    <div th:id="'txt_copied_'+${element.value}"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        style="color:#6A59FF;text-align:right;display:none;padding-left:5px;"
+                        th:text="#{pgw.general.label.copied}">
+                    </div>
+                </div>
+
+                <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
+                    <div class="details-label f14" th:text="#{${element.key}}">User Name</div>
+                    <div class="details-value f14 text-white" th:text="${element.value}">BLG-CP-COMMERCE</div>
+
+                    <input type="image" class="pl-2"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        th:attr="onclick=|copy('${element.value}')|" th:id="'btn_txt_copy_' + ${element.value}"
+                        src="/images/copy.svg"
+                        alt="Submit" width="30" height="25">
+                    <div th:id="'txt_copied_'+${element.value}"
+                        th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
+                        style="color:#6A59FF;text-align:right;display:none;padding-left:5px;"
+                        th:text="#{pgw.general.label.copied}">
+                    </div>
+                </div>
+
+                <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
+                    <div class="details-label f14" th:text="#{${element.key}}">User Name</div>
+                    <div class="details-value f14 text-white" th:text="${element.value}">BLG-CP-COMMERCE</div>
 
                     <input type="image" class="pl-2"
                         th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
@@ -132,15 +163,15 @@
                     </div>
                 </div>
     
-                <form th:attr=" action=${paymentInfoFormModel.formAction},method=${paymentInfoFormModel.method}" id="ePayment" class="form">
+                <form th:attr=" action=${paymentInfoFormModel.formAction},method=${paymentInfoFormModel.method}" id="ePayment" class="form mt-4">
                     <input type="hidden" th:attr="name=refNo,value=${paymentInfoFormModel.refNo}">
     
                     <div th:if="${paymentInfoFormModel.isVA} == true">
-                        <div class="payment-notice f12 mb-3" th:text="#{pgw.general.label.paymentNotice}">Your order will be dispatched once the payment is verified</div>
-                        <div class="payment-timer-instruction f12 text-white text-center mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}">Please use the Payment Code within 24 hours. The instructions can be found in the link below and in the email we have sent you.</div>
+                        <div class="payment-notice text-center f12 mb-3" th:text="#{pgw.general.label.paymentNotice}">Your order will be dispatched once the payment is verified</div>
+                        <div class="f12 text-white text-center mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}">Please use the Payment Code within 24 hours. The instructions can be found in the link below and in the email we have sent you.</div>
                     </div>
 
-                    <div class="steps-container my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
+                    <div class="steps-container outline-color my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
                         <table th:each="element : ${paymentInfoFormModel.paymentStepList}">
                             <tr class="mb-2">
                                 <td th:switch="${elementStat.index}">
@@ -154,8 +185,8 @@
     
                     <div class="mb-3 accordion" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
                         <div class="accordion-section">
-                            <a href="#" class="btn btn-outline-light text-white d-flex justify-content-between">Payment Instruction <span class="arrow">▼</span></a>
-                            <div id="userManualContainer" class="p-4 f12 text-center text-white" th:utext="${paymentInfoFormModel.stepsContentBody}">     
+                            <a href="#" class="btn btn-outline-light outline-color text-white d-flex justify-content-between">Payment Instruction <span class="arrow">▼</span></a>
+                            <div id="userManualContainer" class="p-4 f12 outline-color text-center text-white" th:utext="${paymentInfoFormModel.stepsContentBody}">     
                                 1. Masukkan kartu ATM dan Pin.
                                 2. Pilih Menu Bayar/Beli.
                                 3. Pilih menu Lainnya, hingga menemukan menu Multipayment.
@@ -192,7 +223,7 @@
 
             // Toggle the arrow icon (▼ and ▲)
             const arrow = $(this).find('.arrow');
-            arrow.text(content.is(":visible") ? "▼" : "▲");
+            arrow.text(content.is(":visible") ? "▲" : "▼");
 
             // Add or remove the "opened" class for the accordion section
             $(this).parent('.accordion-section').toggleClass('opened');
