@@ -21,7 +21,6 @@
 
         .checkout-status .description {
             font-size: 14px;
-            font-weight: 400;
             color: #858BBB;
         }
 
@@ -35,7 +34,6 @@
 
         .details-label {
             font-size: 14px;
-            font-weight: 400;
             color: #858BBB;
             min-width: 100px;
             flex-shrink: 0;
@@ -46,9 +44,6 @@
             flex-grow: 1;
             text-align: right;
             overflow-wrap: break-word;
-            min-width: 0;
-            color: #fff;
-            margin-left: 15px;
         }
 
         .payment-notice {
@@ -56,17 +51,11 @@
             color: #858BBB;
             background: #282D51;
             padding: 7px 30px;
-            justify-content: center;
-            align-items: center;
             border-radius: 58px;
         }
 
         .payment-timer-instruction {
-            color: #FFF;
-            text-align: center;
             font-size: 12px;
-            font-style: normal;
-            font-weight: 400;
             line-height: 18px;
         }
 
@@ -74,11 +63,6 @@
             display: none;
             border: 1px solid #eee;
             border-radius: 5px;
-            padding: 10px;
-            margin-top: 3px;
-            text-align: center;
-            color: #fff;
-            font-weight: 400;
             font-size: 12px;
         }
 
@@ -87,25 +71,19 @@
             border-radius: 5px;
         }
 
-        .accordion-section p {
-            display: none;
-        }
+        .accordion-section a { display: none; }
 
-        .accordion-section h2 {
+        .accordion-section a {
             cursor: pointer;
             margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid transparent; /* Add transparent border initially */
-        }
-
-        .accordion-section.opened h2 {
-            border-bottom: 1px solid #000; /* Add a border when opened */
         }
 
         .arrow {
             font-size: 16px;
+            color: #6A59FF;
             transition: transform 0.3s;
         }
     </style>
@@ -143,7 +121,7 @@
             <div class="payment-details p-5">
                 <div class="d-flex mb-3" th:each="element : ${paymentInfoFormModel.forms}">
                     <div class="details-label" th:text="#{${element.key}}">Key</div>
-                    <div class="details-value" th:text="${element.value}">Value</div>
+                    <div class="details-value text-white" th:text="${element.value}">Value</div>
 
                     <input type="image" class="pl-2"
                         th:if="#{${element.key}} eq #{pgw.general.label.transactionNo} or #{${element.key}} eq #{pgw.general.label.paymentCode}"
@@ -174,36 +152,32 @@
     
                     <div th:if="${paymentInfoFormModel.isVA} == true">
                         <div class="payment-notice mb-3" th:text="#{pgw.general.label.paymentNotice}">Your order will be dispatched once the payment is verified</div>
-                        <div class="payment-timer-instruction mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}">Please use the Payment Code within 24 hours. The instructions can be found in the link below and in the email we have sent you.</div>
+                        <div class="payment-timer-instruction text-white text-center mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}">Please use the Payment Code within 24 hours. The instructions can be found in the link below and in the email we have sent you.</div>
                     </div>
     
-                    <div class="mb-3"  th:if="${paymentInfoFormModel.stepsContentBody!=null}">
-                        <a href="#" class="btn btn-outline-primary d-block m-auto" th:text="#{pgw.general.label.userManual}" onclick="toggle();">Payment instructions</a>
-                        <div id="userManualContainer" th:utext="${paymentInfoFormModel.stepsContentBody}">ATM
-                            1. Masukkan kartu ATM dan Pin.
-                            2. Pilih Menu Bayar/Beli.
-                            3. Pilih menu Lainnya, hingga menemukan menu Multipayment.
-                            4. Pilih penyedia jasa OY! Indonesia Masukkan kode biller 89325, lalu pilih Benar.
-                            5. Masukkan Nomor Virtual Account, lalu pilih tombol Benar.
-                            6. Masukkan Angka untuk memilih tagihan, lalu pilih tombol Ya.
-                            7. Akan muncul konfirmasi pembayaran, lalu pilih tombol Ya.
-                            8. Simpan struk sebagai bukti pembayaran Anda.
-                            
-                            INTERNET BANKING atau MANDIRI ONLINE
-                            1. Login Mandiri Online dengan memasukkan username dan password.
-                            2. Pilih menu Pembayaran.
-                            3. Pilih menu Multipayment.
-                            4. Pilih penyedia jasa “OY Indonesia”
-                            5. Masukkan Nomor Virtual Account dan Nominal yang akan dibayarkan, lalu pilih Lanjut.
-                            6. Setelah muncul tagihan, pilih Konfirmasi.
-                            7. Masukkan PIN/ challenge code token.
-                            8. Transaksi selesai, simpan bukti bayar kamu</div>
-                    </div>
-
                     <div class="mb-3 accordion" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
                         <div class="accordion-section">
-                            <h2>Section 1 <span class="arrow">▼</span></h2>
-                            <p>Content for section 1 goes here.</p>
+                            <a href="#" class="btn btn-outline-light text-white d-flex justify-content-between">Payment Instruction <span class="arrow">▼</span></a>
+                            <div id="userManualContainer" class="p-4 text-center text-white" th:utext="${paymentInfoFormModel.stepsContentBody}">     
+                                1. Masukkan kartu ATM dan Pin.
+                                2. Pilih Menu Bayar/Beli.
+                                3. Pilih menu Lainnya, hingga menemukan menu Multipayment.
+                                4. Pilih penyedia jasa OY! Indonesia Masukkan kode biller 89325, lalu pilih Benar.
+                                5. Masukkan Nomor Virtual Account, lalu pilih tombol Benar.
+                                6. Masukkan Angka untuk memilih tagihan, lalu pilih tombol Ya.
+                                7. Akan muncul konfirmasi pembayaran, lalu pilih tombol Ya.
+                                8. Simpan struk sebagai bukti pembayaran Anda.
+                                
+                                INTERNET BANKING atau MANDIRI ONLINE
+                                1. Login Mandiri Online dengan memasukkan username dan password.
+                                2. Pilih menu Pembayaran.
+                                3. Pilih menu Multipayment.
+                                4. Pilih penyedia jasa “OY Indonesia”
+                                5. Masukkan Nomor Virtual Account dan Nominal yang akan dibayarkan, lalu pilih Lanjut.
+                                6. Setelah muncul tagihan, pilih Konfirmasi.
+                                7. Masukkan PIN/ challenge code token.
+                                8. Transaksi selesai, simpan bukti bayar kamu
+                            </div>
                         </div>
                     </div>
     
@@ -216,12 +190,8 @@
 
     <script src="/js/jquery.js"></script>
     <script th:inline="javascript">
-        function toggle(){
-            $( "#userManualContainer").toggle();
-        }
-        
-        $('.accordion-section h2').click(function() {
-            const content = $(this).next('p');
+        $('.accordion-section a').click(function() {
+            const content = $(this).next('div');
             content.toggle();
 
             // Toggle the arrow icon (▼ and ▲)
