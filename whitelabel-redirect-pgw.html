@@ -43,7 +43,7 @@
 </head>
 
 <body onload="setTimeout(function() { document.myForm.submit() }, 100)" class="d-flex justify-content-center align-items-center vh-100">
-    <div class="container">
+    <main class="container">
         <div class="card mx-auto p-4 px-lg-5 align-items-center flex-column">
             <div class="loader"></div>
 
@@ -52,6 +52,6 @@
             </p>
             <form th:action="@{${redirectUrl}}" method="post" name="myForm"></form>
         </div>
-    </div>
+    </main>
 </body>
 </html>

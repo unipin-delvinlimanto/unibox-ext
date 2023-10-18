@@ -6,14 +6,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniPin - Payment</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Payment</title>
 
-    <link rel="stylesheet" href="/css/unipin-bootstrap.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/fonts.css">
     <link rel="stylesheet" href="/css/layout.css">
 
     <style th:inline="css">
+        h1 { 
+            font-size: 20px !important;
+            font-weight: 700 !important;
+         }
+        .container { max-width: 976px; }
+
         .payment-denom-container {
             display: grid;
             grid-column-gap: 5px;
@@ -22,13 +28,7 @@
             grid-template-columns: repeat(2, minmax(93px, 1fr));
         }
         .payment-denom-container .payment-denom-button {
-            font-size: 12px;
-            color: #bec4cf;
-            background: -webkit-gradient(linear,left bottom,left top,from(rgba(45,150,255,0.2)),to(rgba(45,150,255,0.2))),rgba(47,46,60,0.6);
-            background: linear-gradient(0deg,rgba(45,150,255,0.2),rgba(45,150,255,0.2)),rgba(47,46,60,0.6);
-            -webkit-backdrop-filter: blur(13.59px);
-            backdrop-filter: blur(13.59px);
-            border: 1px solid rgba(255,255,255,.12);
+            font-size: 14px;
             height: 100%;
             width: 100%;
             display: -webkit-box;
@@ -37,117 +37,54 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            line-height: 1.3em;
-            border-radius: 50rem;
+            line-height: 20px;
+            border-radius: 4px;
             -webkit-box-pack: center;
             justify-content: center;
             -webkit-box-orient: vertical;
             -webkit-box-direction: normal;
+            background: #3A3D63;
         }
-        .payment-denom-container .payment-denom-button:active, .payment-denom-container .payment-denom-button.active, .payment-denom-container .payment-denom-button.payment-denom-button-active {
-            color: #fff;
-            background: #ff962d;
+        .payment-denom-container .payment-denom-button:active, .payment-denom-container .payment-denom-button.active, .payment-denom-container .payment-denom-button.payment-denom-button-active, .payment-denom-container .payment-denom-button:hover {
+            background: #6A59FF;
             font-weight: 400;
-            box-shadow: 0 4px 8px rgba(255, 150, 45, 0.5);
-        }
-        .payment-denom-container .payment-denom-button:hover{
-            color: #fff !important;
-            background-color: rgba(255,150,45,.5);
-            border-color: #ff962d;
-        }
-        .payment-denom-container .payment-denom-button:active .text-primary, .payment-denom-container .payment-denom-button.active .text-primary, .payment-denom-container .payment-denom-button.payment-denom-button-active .text-primary {
-            color: #fff !important;
         }
         .payment-denom-container .payment-denom-button.disabled {
             text-decoration: line-through;
             cursor: not-allowed;
-            border: 1px solid #E8E8E8;
-            background-color: #000;
+            background-color: #7a74b3;
         }
         @media (min-width: 992px) {
             .payment-denom-container {
-                grid-column-gap: 12px;
-                grid-row-gap: 12px;
-                grid-template-columns: repeat(3, minmax(93px, 1fr));
-            }
-            .payment-denom-container .payment-denom-button {
-                font-size: 1.142rem;
-            }
-        }
-        .btn-outline-primary {
-            color: #[[${denomSelectionModel?.customStyle?.getColor()}]];
-            border-color: #[[${denomSelectionModel?.customStyle?.getColor()}]];
-        }
-        .text-primary {
-            color: #[[${denomSelectionModel?.customStyle?.getColor()}]]!important;
-        }
-        .payment-denom-container .payment-denom-button:hover {
-            color: #[[${denomSelectionModel?.customStyle?.getColor()}]] !important;
-            background-color: #[[${denomSelectionModel?.customStyle?.getColor() + "52"}]] !important;
-            border-color: #[[${denomSelectionModel?.customStyle?.getColor()}]];
-        }
-        .unibox-custom-logo {
-            max-height: 45px;
-            border-radius: 8px;
-        }
-        @media (min-width: 992px){
-            main {
-                margin-top: 80px !important;
+                grid-column-gap: 16px;
+                grid-row-gap: 16px;
+                grid-template-columns: repeat(6, minmax(93px, 1fr));
             }
         }
     </style>
 </head>
 
-<body class="d-flex flex-column">
-    <picture>
-        <source media="(min-width:992px)" srcset="/images/bg-overlay-web.png">
-        <img src="/images/bg-overlay-mobile.png" alt="" class="position-absolute w-100 bg-overlay">
-    </picture>
-
-    <nav class="fixed-top flex-shrink-0 navbar navbar-dark nav-top-outter bg-dark-transparent">
-        <div class="container align-items-center justify-content-center flex-lg-column">
-            <!--/*@thymesVar id="denomSelectionModel" type="com.bigledger.core2.dto.pgw.PgwStyleDTO"*/-->
-            <img width="110px" class="d-block cursor-pointer" th:classappend="${denomSelectionModel?.customStyle?.isCustomLogo() ? 'unibox-custom-logo' : ''}" th:attr="src=${denomSelectionModel?.customStyle?.getLogo_url() ?: 'https://cdn.unipin.com/images/unipin-logo.svg'},alt=${denomSelectionModel?.customStyle?.getGame_name() ?: 'UniPin'}">
-
-            <h5 class="mt-lg-3 ml-3 ml-lg-0 mb-0" th:if="${denomSelectionModel?.customStyle?.getGame_name() != null}" th:text="${denomSelectionModel?.customStyle?.getGame_name() ?: 'UniPin'}"></h5>
+<body class="d-flex flex-column vh-100">
+    <main class="container">
+        <div class="d-flex align-items-center mb-4 pb-3">
+            <img width="24px" height="24px" src="/images/arrow-left-circle.svg" alt="Back" class="mr-3 cursor-pointer" onclick="back()">
+            <h1 th:text="#{pgw.general.label.selectAmount}" class="mb-0">Select Amount</h1>
         </div>
-    </nav>
 
-    <main class="flex-grow-1">
-        <div class="container container-outter-litepage">
-            <div class="container-shadow-litepage-lg mw-576 card">
-                <div class="topbar mb-2 mb-lg-4">
-                    <div class="topbar-control">
-                        <h1 class="text-white" th:text="#{pgw.general.label.selectAmount}"></h1>
-                    </div>
-                </div>
+        <form th:attr="action=${denomSelectionModel.destination}" method="post" id="game-denoms" class="payment-denom-container card p-4 p-lg-5">
+            <!-- /*@thymesVar id="denomSelectionModel" type="com.bigledger.core2.domain.paymentGateway.dto.DenomSelectionModel"*/ -->
 
-                <form th:attr="action=${denomSelectionModel.destination}" method="post" id="game-denoms" class="payment-denom-container">
-                    <!--/*@thymesVar id="denomSelectionModel" type="com.bigledger.core2.domain.paymentGateway.dto.DenomSelectionModel"*/-->
-
-                    <button th:each="denomination,iter : ${denomSelectionModel.denomList}" th:attr="value=${iter.index},name=itemIndex" type="submit" class="payment-denom-button btn btn-outline-primary" data-id="123">
-                        <span th:text="${denomination.get('description')}"></span>
-                        <div class="text-primary" th:text="${denomSelectionModel.currency +' '+denomination.get('amount')}"></div>
-                    </button>
-                </div>
-            </div>
+            <button th:each="denomination,iter : ${denomSelectionModel.denomList}" th:attr="value=${iter.index},name=itemIndex" type="submit" class="payment-denom-button btn px-4 py-3 text-white" data-id="123">
+                <span th:text="${denomination.get('description')}"></span>
+                <div class="f12" th:text="${denomSelectionModel.currency +' '+denomination.get('amount')}"></div>
+            </button>
         </div>
     </main>
 
-    <footer class="flex-shrink-0">
-        <div class="border-separator"></div>
-
-        <div class="container container-1440 mt-4">
-            <div class="px-lg-3">
-                <div class="row">
-                    <div class="footer-copyright-row justify-content-center">
-                        <div class="d-lg-flex">
-                            <div class="footer-cr">© 2023 UniPin. All Rights Reserved</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <script>
+        function back() {
+            history.back();
+        }
+    </script>
 </body>
 </html>
