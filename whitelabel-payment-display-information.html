@@ -49,7 +49,7 @@
             align-items: center;
             justify-content: space-between;
         }
-        .arrow {
+        .accordion-section .arrow {
             font-size: 16px;
             color: #6A59FF;
             transition: transform 0.3s;
@@ -133,7 +133,7 @@
                         </table>
                     </div>
     
-                    <div class="mb-3 accordion" th:if="${paymentInfoFormModel.stepsContentBody!=null}">
+                    <div class="mb-3 accordion" th:if="${paymentInfoFormModel.stepsContentBody!=null}" onclick="toggle()">
                         <div class="accordion-section">
                             <a href="#" class="btn btn-outline-light outline-color text-white d-flex justify-content-between"> <span class="arrow">▼</span></a>
                             <div id="userManualContainer" class="p-4 f12 outline-color text-center text-white" th:utext="${paymentInfoFormModel.stepsContentBody}"></div>
@@ -146,17 +146,20 @@
         </div>
     </main>
 
-    <script src="/js/jquery.js"></script>
     <script th:inline="javascript">
-        $('.accordion-section a').click(function() {
-            const content = $(this).next('div');
-            content.toggle();
+        function toggle() {
+            var c = document.getElementById("userManualContainer");
+            var a = document.querySelector(".accordion-section .arrow");
 
-            const arrow = $(this).find('.arrow');
-            arrow.text(content.is(":visible") ? "▲" : "▼");
-
-            $(this).parent('.accordion-section').toggleClass('opened');
-        });
+            if (c.style.display === "none" || c.style.display === "") {
+                c.style.display = "block";
+                a.textContent = "▲";
+            } else {
+                c.style.display = "none";
+                a.textContent = "▼";
+            }
+        }
+   
 
         function copy(value) {
             navigator.clipboard.writeText(value);
