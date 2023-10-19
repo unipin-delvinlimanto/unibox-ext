@@ -43,7 +43,6 @@
             padding: 7px 30px;
             border-radius: 58px;
         }
-        .steps-container { border-radius: 5px; }
         .accordion-section a {
             cursor: pointer;
             margin-bottom: 0;
@@ -56,11 +55,11 @@
             color: #6A59FF;
             transition: transform 0.3s;
         }
-        .outline-color { border: 1px solid #858BBB; }
-        #userManualContainer {
-            display: none;
-            border-radius: 5px;
+        .outline-color { 
+            border: 1px solid #858BBB;
+            border-radius: 8px; 
         }
+        #userManualContainer { display: none; }
 
         @media screen and (max-width: 768px) {
           .card { flex-direction: column !important; }
@@ -123,7 +122,7 @@
                         <div class="f12 text-white text-center mb-3" th:text="#{pgw.general.label.paymentTimerInstruction}"></div>
                     </div>
 
-                    <div class="steps-container outline-color my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
+                    <div class="outline-color my-4 px-3 py-2" th:if="${paymentInfoFormModel.paymentStepList != null}">
                         <table th:each="element : ${paymentInfoFormModel.paymentStepList}">
                             <tr class="mb-2">
                                 <td th:switch="${elementStat.index}">
