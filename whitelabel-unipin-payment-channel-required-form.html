@@ -70,7 +70,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex flex-row text-white justify-content-center f12 text-center mt-5">
+                    <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5">
                         <div class="mr-1">
                             <img src="/images/verified.svg" alt="Verified User" height="35px">
                         </div>
@@ -90,6 +90,17 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-thumb btn-block" th:text="#{pgw.general.label.confirm}"></button>
+
+                    <div class="d-flex d-sm-flex d-md-none d-lg-none flex-row text-white justify-content-center f12 text-center mt-5">
+                        <div class="mr-1">
+                            <img src="/images/verified.svg" alt="Verified User" height="35px">
+                        </div>
+
+                        <div class="payment-secured-label">
+                            <div>PAYMENT</div>
+                            <div>SECURED</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
