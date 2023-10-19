@@ -27,7 +27,7 @@
         @media screen and (max-width: 768px) {
           .card { flex-direction: column !important; }
           .checkout-info { padding-top: 16px !important; }
-          .payment-form { padding: 24px !important; }
+          .checkout-form { padding: 24px !important; }
         }
     </style>
 </head> 
@@ -43,8 +43,8 @@
                         <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}"></div>
 
                         <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
-                            <div class="details-label f14" th:text="#{pgw.general.label.username}"></div>
-                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('username')}"></div>
+                            <div class="details-label f14" th:text="#{pgw.general.label.username}">Item </div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('username')}">Genisys Crystal</div>
                         </div>
                             
                         <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('item') != null}">

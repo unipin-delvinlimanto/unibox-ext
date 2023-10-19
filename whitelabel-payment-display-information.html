@@ -71,7 +71,7 @@
 <body class="d-flex justify-content-center align-items-center vh-100">
     <main class="container">
         <div class="card overflow-hidden mx-auto flex-row">
-            <div class="checkout-status p-3 text-center d-flex align-items-center justify-content-center">
+            <div class="checkout-status p-4 text-center d-flex align-items-center justify-content-center">
                 <div th:switch="${paymentInfoFormModel.paymentStatus}">
                     <div th:case="'SUCCESS'">
                         <img class="mb-3" src="/images/green-tick.png" alt="Success">
