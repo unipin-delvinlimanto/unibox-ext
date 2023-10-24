@@ -34,72 +34,70 @@
 
 <body class="d-flex justify-content-center align-items-center vh-100">
     <main class="container">
-        <form method="post">
-            <div class="card overflow-hidden mx-auto flex-row">
-                <div class="checkout-info p-4 text-center d-flex flex-column justify-content-between align-items-center">
-                    <div>
-                        <img th:attr="src=${requiredFieldFormModel.paymentChannel.getLogoUrl()}" alt="Payment Channel Logo" class="pc-logo bg-white rounded">
+        <form method="post" class="card overflow-hidden mx-auto flex-row">
+            <div class="checkout-info p-4 text-center d-flex flex-column justify-content-between align-items-center">
+                <div>
+                    <img th:attr="src=${requiredFieldFormModel.paymentChannel.getLogoUrl()}" alt="Payment Channel Logo" class="pc-logo bg-white rounded">
 
-                        <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}"></div>
+                    <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}"></div>
 
-                        <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
-                            <div class="details-label f14" th:text="#{pgw.general.label.username}">Item </div>
-                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('username')}">Genisys Crystal</div>
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
+                        <div class="details-label f14" th:text="#{pgw.general.label.username}">Item </div>
+                        <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('username')}">Genisys Crystal</div>
+                    </div>
+                        
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('item') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.item}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('item')}"></div>
                         </div>
-                            
-                        <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('item') != null}">
-                            <div class="details-row">
-                                <div class="details-label f14" th:text="#{pgw.general.label.item}"></div>
-                                <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('item')}"></div>
-                            </div>
-                        </div>
-                            
-                        <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('game') != null}">
-                            <div class="details-row">
-                                <div class="details-label f14" th:text="#{pgw.general.label.game}"></div>
-                                <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('game')}"></div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee') != null}">
-                            <div class="details-row">
-                                <div class="details-label f14" th:text="#{pgw.general.label.amount}"></div>
-                                <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee')}"></div>
-                            </div>
-                            <small class="text-center text-danger w-100 d-block" th:text="'('+#{pgw.general.label.amountWithServiceFee}+')'"></small>
+                    </div>
+                        
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('game') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.game}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('game')}"></div>
                         </div>
                     </div>
 
-                    <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5">
-                        <div class="mr-1">
-                            <img src="/images/verified.svg" alt="Verified" height="35px">
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.amount}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee')}"></div>
                         </div>
-
-                        <div class="payment-secured-label">
-                            <div>PAYMENT</div>
-                            <div>SECURED</div>
-                        </div>
+                        <small class="text-center text-danger w-100 d-block" th:text="'('+#{pgw.general.label.amountWithServiceFee}+')'"></small>
                     </div>
                 </div>
 
-                <div class="checkout-form p-5">
-                    <div th:each="element : ${requiredFieldFormModel.forms}">
-                        <div class="form-group input-underline mb-0" th:classappend="${element.isFixed() ? 'd-none' : ''}">
-                            <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}"></label>
-                        </div>
+                <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5">
+                    <div class="mr-1">
+                        <img src="/images/verified.svg" alt="Verified" height="35px">
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-thumb btn-block" th:text="#{pgw.general.label.confirm}"></button>
+                    <div class="payment-secured-label">
+                        <div>PAYMENT</div>
+                        <div>SECURED</div>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="d-flex d-sm-flex d-md-none d-lg-none flex-row text-white justify-content-center f12 text-center mt-5">
-                        <div class="mr-1">
-                            <img src="/images/verified.svg" alt="Verified" height="35px">
-                        </div>
+            <div class="checkout-form p-5">
+                <div th:each="element : ${requiredFieldFormModel.forms}">
+                    <div class="form-group input-underline mb-0" th:classappend="${element.isFixed() ? 'd-none' : ''}">
+                        <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}"></label>
+                    </div>
+                </div>
 
-                        <div class="payment-secured-label">
-                            <div>PAYMENT</div>
-                            <div>SECURED</div>
-                        </div>
+                <button type="submit" class="btn btn-primary btn-thumb btn-block" th:text="#{pgw.general.label.confirm}"></button>
+
+                <div class="d-flex d-sm-flex d-md-none d-lg-none flex-row text-white justify-content-center f12 text-center mt-5">
+                    <div class="mr-1">
+                        <img src="/images/verified.svg" alt="Verified" height="35px">
+                    </div>
+
+                    <div class="payment-secured-label">
+                        <div>PAYMENT</div>
+                        <div>SECURED</div>
                     </div>
                 </div>
             </div>
