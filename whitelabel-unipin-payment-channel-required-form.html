@@ -1,193 +1,134 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniPin - Payment</title>
+    <meta charset="UTF-8">
+    <title>Payment</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/unipin-bootstrap.css">
-    <link rel="stylesheet" href="/css/fonts.css">
-    <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/forms.css">
-
+    <link rel="stylesheet" href="/css/bootstrap.css">
     <style>
-        .checkout-overview img {
-            width: 128px;
+        ::-ms-input-placeholder { color: #ffffff74; }
+        ::placeholder {
+            color: #ffffff74;
+            opacity: 1;
         }
-        .container-checkout{
-            padding: 0px 31px;
+        input {
+            border: 0;
+            height: 40px;
+            outline: none;
+            color: white;
+            border-radius: 4px;
+            padding: 8px 16px;
+            background: #282D51;
         }
-        .checkout-payment-name {
-            color: #bec4cf;
-            line-height: 1.2rem;
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: #ffffff;
+            transition: background-color 5000s ease-in-out 0s;
+            box-shadow: inset 0 0 20px 20px #23232329;
         }
-        .checkout-amount {
-            font-size: 36px;
-            margin-top: -8px;
-        }
-        .checkout-details-container {
-            margin-bottom: 30px;
-        }
-        .details-row {
+        .form-group label { margin-bottom: 12px; }
+        .form-group {
             display: flex;
-            margin-top: 12px;
-        }
-        .details-row .details-label {
-            font-weight: 400;
-            color: #bec4cf;
-            min-width: 100px;
-            flex-shrink: 0;
-        }
-        .details-row .details-value {
-            flex-grow: 1;
-            text-align: right;
-            overflow-wrap: break-word;
-            min-width: 0;
-            color: #fff;
-            margin-left: 15px;
-        }
-        .details-row.block-left {
             flex-direction: column;
-            align-items: flex-start;
         }
-        .details-row.block-left .details-value {
-            margin-left: 0;
-            text-align: left;
+        .card { 
+            max-width: 715px;
+            background-color: #353B67;
         }
-        .checkout-foot-details {
-            font-size: 0.8571rem;
-            font-weight: 400;
-            color: #bec4cf;
-            line-height: 1.2rem;
+        .pc-logo { max-width: 106px; }
+        .checkout-info {
+            background-color: #282D51;
+            flex: 1 0 35%;
         }
-        .payment-secured-badge {
-            display: flex;
-            flex-direction: row;
-            color: #fff;
-            justify-content: center;
-            font-size: 12px;
-        }
-        .payment-secured-badge .payment-secured-icon {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            margin-right: 10px;
-            color: #00B187;
-        }
-        .title-case-1{
-            font-size: 1.428rem;
-            font-weight: 700;
-            line-height: 24px;
+        .checkout-info .checkout-amount { font-size: 28px; }
+        .checkout-form { flex: 1 0 65%; }
+        .details-label { color: #858BBB; }
+        @media screen and (max-width: 768px) {
+          .card { flex-direction: column !important; }
+          .checkout-info { padding-top: 16px !important; }
+          .checkout-form { padding: 24px !important; }
         }
     </style>
-</head>
+</head> 
 
-<body class="d-flex flex-column">
-    <picture>
-        <source media="(min-width:992px)" srcset="/images/bg-overlay-web.png">
-        <img src="/images/bg-overlay-mobile.png" alt="" class="position-absolute w-100 bg-overlay">
-    </picture>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <main class="container">
+        <form method="post" class="card overflow-hidden mx-auto flex-row">
+            <div class="checkout-info p-4 text-center d-flex flex-column justify-content-between align-items-center">
+                <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+                    <img th:attr="src=${requiredFieldFormModel.paymentChannel.getLogoUrl()}" alt="Payment Channel Logo" class="pc-logo bg-white rounded">
 
-    <nav class="fixed-top flex-shrink-0 navbar navbar-dark nav-top-outter bg-dark-transparent">
-        <div class="container justify-content-center">
-            <img src="/images/unipin-logo-white.svg" alt="UniPin" width="110px" class="d-block cursor-pointer">
-        </div>
-    </nav>
+                    <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}">IDR 20000</div>
 
-    <main class="flex-grow-1">
-        <div class="container container-outter-litepage">
-            <div class="container-shadow-litepage-lg mw-576 card">
-                <div class="checkout-overview mt-4 text-center">
-                    <img th:attr="src=${requiredFieldFormModel.paymentChannel.getLogoUrl()}" alt="UniPin" class="bg-white rounded">
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
+                        <div class="details-label f14" th:text="#{pgw.general.label.username}">Item </div>
+                        <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('username')}">Genisys Crystal</div>
+                    </div>
+                        
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('item') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.item}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('item')}"></div>
+                        </div>
+                    </div>
+                        
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('game') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.game}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('game')}"></div>
+                        </div>
+                    </div>
 
-                    <div class="mt-4" th:text="#{pgw.general.message.totalAmount}">Total Amount</div>
-                    <div class="checkout-amount mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}">MYR 50.00</div>
+                    <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee') != null}">
+                        <div class="details-row">
+                            <div class="details-label f14" th:text="#{pgw.general.label.amount}"></div>
+                            <div class="f16 font-weight-bold" th:text="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee')}"></div>
+                        </div>
+                        <small class="text-center text-danger w-100 d-block" th:text="'('+#{pgw.general.label.amountWithServiceFee}+')'"></small>
+                    </div>
                 </div>
 
-                <form class="container-checkout" method="post">
-                    <div class="checkout-details-container mb-0" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
-                        <div class="details-row">
-                            <div class="details-label" th:text="#{pgw.general.label.username}"></div>
-                            <div class="details-value" th:text="${requiredFieldFormModel.itemDetails.get('username')}"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="checkout-details-container mb-0" th:if="${requiredFieldFormModel.itemDetails.get('item') != null}">
-                        <div class="details-row">
-                            <div class="details-label" th:text="#{pgw.general.label.item}"></div>
-                            <div class="details-value" th:text="${requiredFieldFormModel.itemDetails.get('item')}"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="checkout-details-container mb-0" th:if="${requiredFieldFormModel.itemDetails.get('game') != null}">
-                        <div class="details-row">
-                            <div class="details-label" th:text="#{pgw.general.label.game}"></div>
-                            <div class="details-value" th:text="${requiredFieldFormModel.itemDetails.get('game')}"></div>
-                        </div>
+                <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5 flex-shrink-0">
+                    <div class="mr-1">
+                        <img src="/images/verified.svg" alt="Verified" height="35px">
                     </div>
 
-                    <div class="checkout-details-container mb-3" th:if="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee') != null}">
-                        <div class="details-row">
-                            <div class="details-label" th:text="#{pgw.general.label.amount}"></div>
-                            <div class="details-value" th:text="${requiredFieldFormModel.itemDetails.get('amount_with_service_fee')}"></div>
-                        </div>
-                        <small class="text-right text-danger w-100 d-block" th:text="'('+#{pgw.general.label.amountWithServiceFee}+')'">(Termasuk Biaya Layanan)</small>
+                    <div class="payment-secured-label">
+                        <div>PAYMENT</div>
+                        <div>SECURED</div>
                     </div>
-                    <hr>
-
-                    <div class="title-case-1 my-3">Billing Info</div>
-                    
-                    <div class="checkout-billing-container mt-4" th:each="element : ${requiredFieldFormModel.forms}">
-                        <div class="form-group input-underline mb-0" th:classappend="${element.isFixed() ? 'd-none' : ''}">
-                            [(${element.toString()})]
-                            <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}">Security Code</label>
-                        </div>
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-12">
-                            <button id="payment-checkout-button" type="submit" class="btn btn-primary btn-thumb rounded-pill btn-block" th:text="#{pgw.general.label.confirm}">CONFIRM</button>
-
-                            <div class="checkout-foot-details mt-3 text-center">
-                                <span th:text="#{pgw.general.label.tncAgreement}"></span>
-                                <a href="https://www.unipin.com/user-terms-and-conditions" target="_blank" th:text="#{pgw.general.label.tnc}"></a>.
-                            </div>
-
-                            <div class="payment-secured-badge text-center mt-3">
-                                <div class="payment-secured-icon">
-                                    <span class="icon-Verified-User"></span>
-                                </div>
-
-                                <div class="payment-secured-label">
-                                    <div>PAYMENT</div>
-                                    <div>SECURED</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>      
+                </div>
             </div>
-        </div>
+
+            <div class="checkout-form p-5">
+                <div th:each="element : ${requiredFieldFormModel.forms}">
+                    <div class="form-group input-underline mb-4" th:classappend="${element.isFixed() ? 'd-none' : ''}">
+                        <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}" class="f14">Label</label>
+                        [(${element.toString()})]
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-thumb btn-block" th:text="#{pgw.general.label.confirm}"></button>
+
+                <div class="d-flex d-sm-flex d-md-none d-lg-none flex-row text-white justify-content-center f12 text-center mt-5">
+                    <div class="mr-1">
+                        <img src="/images/verified.svg" alt="Verified" height="35px">
+                    </div>
+
+                    <div class="payment-secured-label">
+                        <div>PAYMENT</div>
+                        <div>SECURED</div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </main>
-
-    <footer class="flex-shrink-0">
-        <div class="border-separator"></div>
-
-        <div class="container container-1440 mt-4">
-            <div class="px-lg-3">
-                <div class="row">
-                    <div class="footer-copyright-row justify-content-center">
-                        <div class="d-lg-flex">
-                            <div class="footer-cr">© 2023 UniPin. All Rights Reserved</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 </body>
 </html>
