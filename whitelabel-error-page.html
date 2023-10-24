@@ -34,8 +34,6 @@
                         <span th:text="'Error ID: ' + ${errorID}" ></span>
                         <button class="btn-outline-primary btn btn-sm flex-grow-0 ml-2" th:attr="onclick='navigator.clipboard.writeText(`'+${errorID}+'`);'"><img src="/images/copy.png" width="15px"></button>
                     </div>
-                    
-                    <p th:text="#{pgw.general.message.contactCustomerService}" >Customer service</p>
                 </div>
             </div>
         </div>
