@@ -10,6 +10,34 @@
 
     <link rel="stylesheet" href="/css/bootstrap.css">
     <style>
+        ::-ms-input-placeholder { color: #ffffff74; }
+        ::placeholder {
+            color: #ffffff74;
+            opacity: 1;
+        }
+        input {
+            border: 0;
+            height: 40px;
+            outline: none;
+            color: white;
+            border-radius: 4px;
+            padding: 8px 16px;
+            background: #282D51;
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: #ffffff;
+            transition: background-color 5000s ease-in-out 0s;
+            box-shadow: inset 0 0 20px 20px #23232329;
+        }
+        .form-group label { margin-bottom: 12px; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
         .card { 
             max-width: 715px;
             background-color: #353B67;
@@ -21,9 +49,7 @@
         }
         .checkout-info .checkout-amount { font-size: 28px; }
         .checkout-form { flex: 1 0 65%; }
-
         .details-label { color: #858BBB; }
-
         @media screen and (max-width: 768px) {
           .card { flex-direction: column !important; }
           .checkout-info { padding-top: 16px !important; }
@@ -36,10 +62,10 @@
     <main class="container">
         <form method="post" class="card overflow-hidden mx-auto flex-row">
             <div class="checkout-info p-4 text-center d-flex flex-column justify-content-between align-items-center">
-                <div>
+                <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
                     <img th:attr="src=${requiredFieldFormModel.paymentChannel.getLogoUrl()}" alt="Payment Channel Logo" class="pc-logo bg-white rounded">
 
-                    <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}"></div>
+                    <div class="checkout-amount font-weight-bold mt-3 mb-3" th:text="${requiredFieldFormModel.currency +' '+ requiredFieldFormModel.price}">IDR 20000</div>
 
                     <div class="mb-3" th:if="${requiredFieldFormModel.itemDetails.get('username') != null}">
                         <div class="details-label f14" th:text="#{pgw.general.label.username}">Item </div>
@@ -69,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5">
+                <div class="d-none d-md-flex d-lg-flex flex-row text-white justify-content-center f12 text-center mt-5 flex-shrink-0">
                     <div class="mr-1">
                         <img src="/images/verified.svg" alt="Verified" height="35px">
                     </div>
@@ -83,8 +109,9 @@
 
             <div class="checkout-form p-5">
                 <div th:each="element : ${requiredFieldFormModel.forms}">
-                    <div class="form-group input-underline mb-0" th:classappend="${element.isFixed() ? 'd-none' : ''}">
-                        <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}"></label>
+                    <div class="form-group input-underline mb-4" th:classappend="${element.isFixed() ? 'd-none' : ''}">
+                        <label th:attr="for=${element.getName()}" th:text="#{${element.getLabel()}}" class="f14">Label</label>
+                        [(${element.toString()})]
                     </div>
                 </div>
 
