@@ -10,8 +10,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/fonts.css">
-    <link rel="stylesheet" href="/css/layout.css">
 
     <style th:inline="css">
         h1 { 
@@ -19,7 +17,6 @@
             font-weight: 700 !important;
          }
         .container { max-width: 976px; }
-
         .payment-denom-container {
             display: grid;
             grid-column-gap: 5px;
@@ -64,9 +61,9 @@
     </style>
 </head>
 
-<body class="d-flex flex-column vh-100">
-    <main class="container">
-        <div class="d-flex align-items-center mb-4 pb-3">
+<body>
+    <main class="container mt-4 mt-lg-5 pt-lg-4">
+        <div class="d-flex align-items-center mb-4 pb-2">
             <img width="24px" height="24px" src="/images/arrow-left-circle.svg" alt="Back" class="mr-3 cursor-pointer" onclick="back()">
             <h1 th:text="#{pgw.general.label.selectAmount}" class="mb-0">Select Amount</h1>
         </div>
